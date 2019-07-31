@@ -44,13 +44,22 @@
         },
 
         created() {
+            window.addEventListener("orientationchange", this.onOrientationchange)
         },
 
         mounted() {
             this.fetchData();
         },
 
+        beforeDestroy() {
+            window.removeEventListener("orientationchange", this.onOrientationchange)
+        },
+
         methods: {
+            onOrientationchange: function () {
+                this.$refs.chart.resize();
+            },
+
             fetchData: function () {
                 this.$refs.chart.showLoading();
 
@@ -118,6 +127,7 @@
             .tabs {
                 display: flex;
                 margin-bottom: 1.5rem;
+                min-height: 8.6rem;
 
                 > div {
                     flex: 1;
@@ -140,6 +150,7 @@
                 display: flex;
                 justify-content: space-around;
                 margin-top: 2rem;
+                min-height: 5rem;
             }
         }
 
