@@ -64,7 +64,7 @@ export const lineChartDefaultOptions = {
         left: "20",
         right: "30",
         top: "15",
-        bottom: "0",
+        bottom: "5",
         containLabel: true
     },
     legend: {show: false},

@@ -12,6 +12,11 @@
             <div class="chart-container">
                 <e-charts :options="defaultOptions" ref="chart" autoresize></e-charts>
             </div>
+            <div class="line-legend-container">
+                <line-legend v-for="legend in currentChartData.customLegends"
+                             :key="legend.name"
+                             :legend-data="legend"></line-legend>
+            </div>
         </div>
         <card-footer :show-date-selector="true" :show-view-more="true"></card-footer>
     </div>
@@ -24,10 +29,11 @@
     import CardFooter from "./CardFooter";
     import CardHeader from "./CardHeader";
     import Tab from "./Tab";
+    import LineLegend from "./LineLegend";
 
     export default {
         name: "PageView",
-        components: {Tab, ECharts, CardHeader, CardFooter},
+        components: {LineLegend, Tab, ECharts, CardHeader, CardFooter},
 
         data: function () {
             return {
@@ -85,6 +91,12 @@
                 this.selectedTab = tabKey;
                 this.$refs.chart.mergeOptions(this.getCurrentChartData().options);
             }
+        },
+
+        computed: {
+            currentChartData: function () {
+                return this.getCurrentChartData();
+            }
         }
     }
 </script>
@@ -122,6 +134,12 @@
                     height: 100%;
                 }
 
+            }
+
+            .line-legend-container {
+                display: flex;
+                justify-content: space-around;
+                margin-top: 2rem;
             }
         }
 
