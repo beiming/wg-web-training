@@ -89,12 +89,15 @@
         display: flex;
         flex-grow: 1;
         flex-direction: column;
+        margin: 0 2rem;
 
         .day-header {
             display: flex;
             margin-top: 1.6rem;
             margin-bottom: 0.5rem;
             margin-right: 5rem;
+            font-size: 1.2rem;
+            color: #737373;
 
             span {
                 height: 17px;
@@ -106,6 +109,8 @@
         .hour-header {
             display: flex;
             flex-direction: column;
+            color: #737373;
+            font-size: 1.2rem;
 
             div {
                 flex-grow: 1;

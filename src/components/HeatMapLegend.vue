@@ -22,7 +22,7 @@
 
 <style lang="scss">
     .heat-map-legend {
-        margin-right: 5.5rem;
+        margin: 1.7rem 5.5rem 1.5rem 0;
 
         .color-group {
             display: flex;
@@ -34,13 +34,15 @@
 
             span {
                 flex-grow: 1;
-                margin-bottom: 0.375rem;
             }
         }
 
         .text-group {
             display: flex;
             justify-content: space-between;
+            font-size: 1.2rem;
+            color: #737373;
+            margin-top: 0.5rem;
 
             span:not(:last-child) {
                 margin-right: 0.5rem;
