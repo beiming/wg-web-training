@@ -7,15 +7,21 @@
             </div>
             <div class="heat-map-matrix">
                 <div class="hour-column" v-for="dayOfWeek in 7">
-                    <HeatMapItem :page-view="heatMapMatrix[hour-1][dayOfWeek-1]" v-for="hour in 24"></HeatMapItem>
+                    <HeatMapItem :page-view="heatMapMatrix[hour-1][dayOfWeek-1]"
+                                 v-for="hour in 24" @mouseenter.native="mouseEnterHandler(dayOfWeek, hour)"
+                                 @mouseleave.native="showTooltip=false"
+                                 @mousemove.native="computeToolTipPosition"></HeatMapItem>
                 </div>
                 <div class="hour-header">
-                    <div v-for="hour in 24">{{hours[hour-1]}}</div>
+                    <div v-for="hour in 24">{{hourTitle(hour-1)}}</div>
                 </div>
             </div>
             <HeatMapLegend></HeatMapLegend>
         </div>
         <CardFooter :show-date-selector="true" :show-view-more="true"></CardFooter>
+        <HeatMapTooltip :show="showTooltip" :x="pageX" :y="pageY + 20" :day="days[matrixX-1]" :hour="hours[matrixY-1]"
+                        :page-view="heatMapMatrix[matrixX-1][matrixY-1]">
+        </HeatMapTooltip>
     </div>
 </template>
 
@@ -25,24 +31,38 @@
     import HeatMapItem from "./HeatMapItem";
     import CardFooter from "./CardFooter";
     import HeatMapLegend from "./HeatMapLegend";
+    import HeatMapTooltip from "./HeatMapTooltip";
 
     const DAYS = ["周一", "周二", "周三", "周四", "周五", "周六", "周日"];
-    const HOURS = ["00:00", "", "02:00", "", "04:00", "", "06:00", "", "08:00", "", "10:00", "", "12:00", "", "14:00", "", "16:00", "", "18:00", "", "20:00", "", "22:00", ""];
+    const HOURS = ["00:00", "01:00", "02:00", "03:00", "04:00", "05:00", "06:00", "07:00", "08:00", "09:00", "10:00", "11:00", "12:00", "", "14:00", "", "16:00", "", "18:00", "", "20:00", "", "22:00", ""];
 
     export default {
-        components: { CardFooter, HeatMapItem, CardHeader, HeatMapLegend },
+        components: { HeatMapTooltip, CardFooter, HeatMapItem, CardHeader, HeatMapLegend },
         data() {
             return {
                 loaded: false,
                 heatMapMatrix: new Array(24),
                 days: DAYS,
-                hours: HOURS
+                hours: HOURS,
+                showTooltip: false,
+                pageX: 0,
+                pageY: 0,
+                matrixX: 1,
+                matrixY: 1
             }
         },
         created() {
             this.fetchHeatMapData().then(data => {
                 this.parseToHeatMapMatrix(data.result.data[0].rows)
             })
+        },
+        computed: {
+            tooltipPosition() {
+                return {
+                    x: this.pageX,
+                    y: this.pageY + 20
+                }
+            }
         },
         methods: {
             fetchHeatMapData() {
@@ -72,6 +92,20 @@
                 });
                 console.log(this.heatMapMatrix)
                 this.loaded = true;
+            },
+            computeToolTipPosition(event) {
+                this.pageX = event.pageX;
+                this.pageY = event.pageY
+            },
+            mouseEnterHandler(x, y) {
+                this.matrixX = x;
+                this.matrixY = y;
+                this.showTooltip = true;
+            },
+            hourTitle(hour) {
+                if (hour % 2 === 0) {
+                    return this.hours[hour]
+                }
             }
         }
     }
@@ -131,15 +165,7 @@
                 display: flex;
                 flex-direction: column;
                 flex-grow: 1;
-
-                span {
-                    margin-right: 0.5rem;
-                    margin-bottom: 0.6rem;
-                    flex-grow: 1;
-                }
             }
         }
     }
-
-
 </style>

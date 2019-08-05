@@ -1,5 +1,5 @@
 <template>
-    <span :style="{'background-color': background}"></span>
+    <span class="heat-map-item" :style="{'background-color': background}"></span>
 </template>
 <script>
     export default {
@@ -21,5 +21,13 @@
 </script>
 
 <style lang="scss">
+    .heat-map-item {
+        margin-right: 0.5rem;
+        margin-bottom: 0.6rem;
+        flex-grow: 1;
 
+        &:hover {
+            cursor: pointer;
+        }
+    }
 </style>
